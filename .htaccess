@@ -1,0 +1,50 @@
+# InfinityFree / Shared Hosting .htaccess
+# Security & Session Configuration
+
+# Disable directory browsing
+Options -Indexes
+
+# PHP Settings
+<IfModule mod_php.c>
+    php_value session.save_path /home/volXX_X/if0_XXXXXXXX/htdocs/tmp/sessions
+    php_value display_errors 0
+    php_value display_startup_errors 0
+    php_value error_reporting 32759
+</IfModule>
+
+# Protect sensitive files
+<FilesMatch "^(includes|database\.sql|deploy\.sql|DEPLOY\.md|setup\.php)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(sql|md|log|ini)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
+</IfModule>
